@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+/* Design tokens Tailwind v4 : police et animations personnalisées.
+   Remplace l'ancien tailwind.config.js (JS, jamais chargé par Tailwind v4
+   en l'absence d'une directive @config) — tout vit maintenant ici. */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --animate-fade-up: fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-float: float 3s ease-in-out infinite;
+  --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.6;
+    box-shadow: 0 0 15px 0 rgb(139 92 246 / 0.3);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 25px 0 rgb(139 92 246 / 0.6);
+  }
+}
+
+@layer base {
+  /* Pas d'équivalent utilitaire Tailwind pour color-scheme : l'app est
+     volontairement mono-thème sombre (affecte le rendu natif des inputs/scrollbars). */
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    /* box-sizing, margin: 0 et le reset des polices sur les boutons sont déjà
+       gérés par le Preflight de Tailwind : inutile de les redéfinir ici. */
+    @apply min-h-screen overflow-x-hidden text-slate-100 antialiased;
+    background: radial-gradient(circle at 50% 0%, #120e2e 0%, #030014 50%, #020008 100%);
+  }
+
+  #root {
+    @apply min-h-screen;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply rounded-[28px] border border-white/[0.06] backdrop-blur-[20px] transition duration-300 hover:border-violet-400/30;
+    background: rgb(13 10 33 / 0.45);
+    box-shadow:
+      0 10px 40px -10px rgb(0 0 0 / 0.7),
+      inset 0 1px 0 0 rgb(255 255 255 / 0.05);
+
+    &:hover {
+      box-shadow:
+        0 15px 50px -10px rgb(139 92 246 / 0.15),
+        inset 0 1px 0 0 rgb(255 255 255 / 0.08);
+    }
+  }
+
+  .panel-title {
+    @apply text-lg font-bold tracking-tight text-white;
+  }
+
+  .soft-text {
+    @apply text-sm leading-6 text-slate-400;
+  }
+}
+
+@layer utilities {
+  /* Pas d'équivalent utilitaire Tailwind pour ::-webkit-scrollbar : CSS brut nécessaire. */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgb(3 0 20 / 0.6);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full;
+    background: rgb(139 92 246 / 0.3);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(139 92 246 / 0.5);
+  }
+}
