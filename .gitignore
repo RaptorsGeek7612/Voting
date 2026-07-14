@@ -1,0 +1,9 @@
+node_modules/
+dist/
+backend/artifacts/
+backend/cache/
+backend/types/
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
